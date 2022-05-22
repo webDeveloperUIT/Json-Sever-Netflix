@@ -7,7 +7,7 @@ const { default: movieRoutes } = require("./routes/movies");
 const { default: listRoutes } = require("./routes/lists");
 const app = express();
 var cors = require("cors");
-app.use(); // Use this after the variable declaration
+app.use(cors()); // Use this after the variable declaration
 // Add headers before the routes are defined
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
@@ -35,7 +35,7 @@ app.use(); // Use this after the variable declaration
 // });
 dotenv.config();
 //connect database
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connection SuccessFull"))
