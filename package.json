@@ -2,10 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "sever.js",
   "scripts": {
-    "dev": "nodemon  --exec babel-node server.js",
-    "start": "nodemon sever.js"
+    "start": "nodemon  --exec babel-node server.js"
   },
   "keywords": [],
   "author": "",
