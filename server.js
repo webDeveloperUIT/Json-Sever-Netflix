@@ -6,31 +6,40 @@ const { default: userRoutes } = require("./routes/users");
 const { default: movieRoutes } = require("./routes/movies");
 const { default: listRoutes } = require("./routes/lists");
 const app = express();
+var cors = require("cors");
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT"],
+    credentials: true,
+    headers: true,
+  })
+); // Use this after the variable declaration
 // Add headers before the routes are defined
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4000");
-  res.setHeader("Access-Control-Request-Origin", "http://localhost:4000");
+// app.use(function (req, res, next) {
+//   // Website you wish to allow to connect
+//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:4000");
+//   res.setHeader("Access-Control-Request-Origin", "http://localhost:4000");
 
-  // Request methods you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
+//   // Request methods you wish to allow
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//   );
 
-  // Request headers you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
+//   // Request headers you wish to allow
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With,content-type"
+//   );
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader("Access-Control-Allow-Credentials", true);
+// Set to true if you need the website to include cookies in the requests sent
+// to the API (e.g. in case you use sessions)
+// res.setHeader("Access-Control-Allow-Credentials", true);
 
-  // Pass to next layer of middleware
-  next();
-});
+// Pass to next layer of middleware
+// next();
+// });
 dotenv.config();
 //connect database
 const port = process.env.PORT || 3000;
@@ -47,6 +56,7 @@ userRoutes(app);
 movieRoutes(app);
 // list moives routes
 listRoutes(app);
+
 app.listen(port, () => {
   console.log("Backend sever is running");
 });
