@@ -7,14 +7,7 @@ const { default: movieRoutes } = require("./routes/movies");
 const { default: listRoutes } = require("./routes/lists");
 const app = express();
 var cors = require("cors");
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT"],
-    credentials: true,
-    headers: true,
-  })
-); // Use this after the variable declaration
+app.use(); // Use this after the variable declaration
 // Add headers before the routes are defined
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
