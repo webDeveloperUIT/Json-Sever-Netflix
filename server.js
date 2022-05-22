@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
 });
 dotenv.config();
 //connect database
+const port = process.env.PORT || 3000;
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connection SuccessFull"))
@@ -46,6 +47,6 @@ userRoutes(app);
 movieRoutes(app);
 // list moives routes
 listRoutes(app);
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log("Backend sever is running");
 });
