@@ -11,6 +11,10 @@ const MovieSchema = new mongoose.Schema(
     year: { type: String },
     limit: { type: Number },
     genre: { type: String },
+    price: {
+      type: Number,
+      required: true,
+    },
     isSeries: { type: Boolean, default: false },
   },
   { timestamps: true }

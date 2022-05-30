@@ -1,8 +1,23 @@
 const Movie = require("../models/Movie");
 // create a new movie
 const createMovie = async (req) => {
+  console.log(req.body.movie);
   if (req.user.isAdmin) {
-    const newMovie = new Movie(req.body);
+    const newMovie = new Movie({
+      title: req.body.movie.title,
+      desc: req.body.movie.desc,
+      img: req.body.movie.img,
+      imgTitle: req.body.movie.imgTitle,
+      imgSm: req.body.movie.imgSm,
+      trailer: req.body.movie.trailer,
+      video: req.body.movie.video,
+      year: req.body.movie.year,
+      limit: req.body.movie.limit,
+      genre: req.body.movie.genre,
+      price: req.body.movie.price,
+      isSeries: req.body.movie.isSeries,
+    });
+
     try {
       const savedMovie = await newMovie.save();
       return {

@@ -7,6 +7,9 @@ const verifyToken = require("../verifyToken");
 const userRoutes = (app) => {
   //update user
   router.put("/:id", verifyToken, userController.updateUser);
+  //create user
+  router.post("/create", verifyToken, userController.NewUser);
+
   //delete user
   router.delete("/delete/:id", verifyToken, userController.deleteUser);
   //get
@@ -15,6 +18,11 @@ const userRoutes = (app) => {
   router.get("/", verifyToken, userController.getAllUser);
   //get user stats
   router.get("/stats", userController.getStateUsers);
+  router.get("/get/movie", verifyToken, userController.postMovie);
+  router.get("/get/voucher", verifyToken, userController.postVoucher);
+  // user payment
+  router.post("/vnpay_payment", verifyToken, userController.vnpayPayment);
+  router.post("/vnpay_ipn", verifyToken, userController.vnpayIpn);
   return app.use("/api/users/", router);
 };
 export default userRoutes;

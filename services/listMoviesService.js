@@ -1,4 +1,32 @@
 const List = require("../models/List");
+
+const updateListMovie = async (req) => {
+  if (req.user.isAdmin) {
+    try {
+      const listMoviesUpdate = await List.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true }
+      );
+      return {
+        error: false,
+        message: "The list movie has been update successfully!",
+        updateListMovie,
+      };
+    } catch (err) {
+      return {
+        error: true,
+        message: err.message,
+      };
+    }
+  } else {
+    return {
+      error: true,
+      message: "The list movie update failure!",
+    };
+  }
+};
+
 const createListMovie = async (req) => {
   if (req.user.isAdmin) {
     try {
@@ -79,4 +107,5 @@ module.exports = {
   createListMovie,
   deleteListMovie,
   getListMovie,
+  updateListMovie,
 };

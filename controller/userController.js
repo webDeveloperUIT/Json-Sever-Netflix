@@ -2,12 +2,25 @@ const User = require("../models/User");
 const userService = require("../services/userService");
 const CryptoJS = require("crypto-js");
 
+//[PUT] /api/users/create
+const NewUser = async (req, res) => {
+  try {
+    let DTO = await userService.NewUser(req);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 //[PUT] /api/users/:id
 const updateUser = async (req, res) => {
   try {
     let DTO = await userService.updateUser(req);
     if (DTO.error) {
-      res.status(500).json(DTO.error);
+      res.status(500).json(DTO.message);
     }
     res.status(200).json(DTO);
   } catch (err) {
@@ -63,10 +76,64 @@ const getStateUsers = async (req, res) => {
     res.status(500).json(err);
   }
 };
+//[POST] api/user/get/movie
+async function postMovie(req, res) {
+  try {
+    let DTO = await userService.postMovie(req);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).jons(err);
+  }
+}
+//[POST] api/user/get/voucher
+async function postVoucher(req, res) {
+  try {
+    let DTO = await userService.postVoucher(req);
+    console.log(DTO);
+    if (DTO.error) {
+      res.status(500).jons(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+const vnpayPayment = async (req, res, next) => {
+  try {
+    let DTO = await userService.vnpayPayment(req);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const vnpayIpn = async (req, res, next) => {
+  try {
+    let DTO = await userService.vnpayIpn(req.userId, req);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(DTO.message);
+  }
+};
 module.exports = {
   updateUser,
   deleteUser,
   getUser,
   getAllUser,
   getStateUsers,
+  postMovie,
+  postVoucher,
+  vnpayPayment,
+  vnpayIpn,
+  NewUser,
 };

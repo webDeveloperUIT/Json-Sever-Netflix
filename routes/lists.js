@@ -4,6 +4,8 @@ const listController = require("../controller/listController");
 const listRoutes = (app) => {
   // create list movies
   router.post("/create", verifyToken, listController.createListMovie);
+  // update list movie
+  router.put("/update/:id", verifyToken, listController.updateListMovie);
   // delete list movies
   router.delete("/delete/:id", verifyToken, listController.deleteListMovie);
   // get list movies
