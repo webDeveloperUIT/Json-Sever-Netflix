@@ -18,8 +18,8 @@ const userRoutes = (app) => {
   router.get("/", verifyToken, userController.getAllUser);
   //get user stats
   router.get("/stats", userController.getStateUsers);
-  router.get("/get/movie", verifyToken, userController.postMovie);
-  router.get("/get/voucher", verifyToken, userController.postVoucher);
+  router.post("/get/movie", verifyToken, userController.postMovie);
+  router.post("/get/voucher", verifyToken, userController.postVoucher);
   // user payment
   router.post("/vnpay_payment", verifyToken, userController.vnpayPayment);
   router.post("/vnpay_ipn", verifyToken, userController.vnpayIpn);

@@ -187,6 +187,7 @@ const getStateUsers = async (req) => {
 };
 // by movie
 const postMovie = async (req) => {
+    console.log(req.movie_id);
     try {
         console.log(req);
         let user = await User.findById(req.user.id);
