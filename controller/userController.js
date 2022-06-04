@@ -102,7 +102,7 @@ async function postVoucher(req, res) {
   }
 }
 
-const vnpayPayment = async (req, res, next) => {
+const vnpayPayment = async (req, res) => {
   try {
     let DTO = await userService.vnpayPayment(req);
     if (DTO.error) {

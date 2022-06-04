@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Movie = require("../models/Movie");
 const Voucher = require("../models/Voucher");
 const CryptoJS = require("crypto-js");
+const Vnpay = require("../models/Vnpay");
 
 // create a new hashPassword
 
@@ -327,6 +328,167 @@ const postVoucher = async (req) => {
     }
 };
 
+const vnpayPayment = async (req) => {
+    try {
+        var ipAddr = "127.0.0.1";
+        var tmnCode = "XCGAYSB8";
+        var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
+        var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        var returnUrl = encodeURIComponent(
+            "https://camonvidaden-cba2d.web.app/donepayment"
+        );
+
+        var date = new Date();
+
+        var dateFormat = require("dateformat");
+
+        var createDate = dateFormat(date, "yyyymmddHHmmss");
+        var orderId = dateFormat(date, "HHmmss");
+        var amount = req.body.amount;
+
+        var orderInfo = encodeURIComponent(req.body.orderDescription);
+        var orderType = req.body.orderType;
+        var locale = req.body.language;
+        if (locale === null || locale === "") {
+            locale = "vn";
+        }
+        var currCode = "VND";
+        var vnp_Params_old = {};
+        vnp_Params_old["vnp_Version"] = "2.1.0";
+        vnp_Params_old["vnp_Command"] = "pay";
+        vnp_Params_old["vnp_TmnCode"] = tmnCode;
+        // vnp_Params_old['vnp_Merchant'] = ''
+        vnp_Params_old["vnp_Locale"] = locale;
+        vnp_Params_old["vnp_CurrCode"] = currCode;
+        vnp_Params_old["vnp_TxnRef"] = orderId;
+        vnp_Params_old["vnp_OrderInfo"] = orderInfo;
+        vnp_Params_old["vnp_OrderType"] = orderType;
+        vnp_Params_old["vnp_Amount"] = amount * 100;
+        vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
+        vnp_Params_old["vnp_IpAddr"] = ipAddr;
+        vnp_Params_old["vnp_CreateDate"] = createDate;
+        // if(bankCode !== null && bankCode !== ''){
+        //     vnp_Params_old['vnp_BankCode'] = bankCode;
+        // }
+
+        const vnp_Params = Object.keys(vnp_Params_old)
+            .sort()
+            .reduce((obj, key) => {
+                obj[key] = vnp_Params_old[key];
+                return obj;
+            }, {});
+
+        var querystring = require("qs");
+        var signData = querystring.stringify(vnp_Params, { encode: false });
+        var crypto = require("crypto");
+        var hmac = crypto.createHmac("sha512", secretKey);
+        var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+        vnp_Params["vnp_SecureHash"] = signed;
+        vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+
+        console.log(vnp_Params);
+
+        console.log(vnpUrl);
+
+        return {
+            err: false,
+            message: "Chuyển hướng thanh toán",
+            vnpayUrl: vnpUrl,
+        };
+    } catch (err) {
+        return {
+            err: true,
+            message: err.message,
+        };
+    }
+};
+
+const vnpayIpn = async (userId, req) => {
+    try {
+        var vnp_Params_old = req.body;
+        var secureHash = vnp_Params_old["vnp_SecureHash"];
+
+        delete vnp_Params_old["vnp_SecureHash"];
+
+        const vnp_Params = Object.keys(vnp_Params_old)
+            .sort()
+            .reduce((obj, key) => {
+                obj[key] = vnp_Params_old[key];
+                return obj;
+            }, {});
+
+        var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
+        var querystring = require("qs");
+        var signData = querystring.stringify(vnp_Params, { encode: false });
+        var crypto = require("crypto");
+        var hmac = crypto.createHmac("sha512", secretKey);
+        var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+
+        if (secureHash === signed) {
+            const transactionNo = vnp_Params["vnp_TransactionNo"];
+            const vnpay = await Vnpay.findOne({
+                vnp_TransactionNo: transactionNo,
+            });
+
+            if (!vnpay) {
+                const user = await User.findById(userId);
+
+                var orderId = vnp_Params["vnp_TxnRef"];
+                var rspCode = vnp_Params["vnp_ResponseCode"];
+                var money = vnp_Params["vnp_Amount"];
+
+                user.wallet_balance += parseInt(money) / 100;
+
+                const newVnpay = new Vnpay({
+                    vnp_Amount: vnp_Params["vnp_Amount"],
+                    vnp_BankCode: vnp_Params["vnp_BankCode"],
+                    vnp_BankTranNo: vnp_Params["vnp_BankTranNo"],
+                    vnp_CardType: vnp_Params["vnp_CardType"],
+                    vnp_OrderInfo: vnp_Params["vnp_OrderInfo"],
+                    vnp_TransactionNo: vnp_Params["vnp_TransactionNo"],
+                    vnp_TmnCode: vnp_Params["vnp_TmnCode"],
+                    vnp_PayDate: vnp_Params["vnp_PayDate"],
+                });
+
+                newVnpay.save();
+                user.save();
+
+                return {
+                    error: false,
+                    message: "Thanh toán thành công",
+                    paymentInfo: {
+                        vnp_Amount: parseInt(vnp_Params["vnp_Amount"]) / 100,
+                        vnp_BankCode: vnp_Params["vnp_BankCode"],
+                        vnp_BankTranNo: vnp_Params["vnp_BankTranNo"],
+                        vnp_CardType: vnp_Params["vnp_CardType"],
+                        vnp_OrderInfo: vnp_Params["vnp_OrderInfo"],
+                        vnp_PayDate: vnp_Params["vnp_PayDate"],
+                    },
+                    userInfo: {
+                        name: user.fullname,
+                        email: user.email,
+                    },
+                };
+            } else {
+                return {
+                    error: true,
+                    message: "Giao dịch đã được xử lí",
+                };
+            }
+        } else {
+            return {
+                error: true,
+                message: "Lỗi checksum",
+            };
+        }
+    } catch (err) {
+        return {
+            err: true,
+            message: err.message,
+        };
+    }
+};
+
 module.exports = {
     updateUser,
     deleteUser,
@@ -336,4 +498,6 @@ module.exports = {
     postMovie,
     postVoucher,
     NewUser,
+    vnpayIpn,
+    vnpayPayment,
 };
