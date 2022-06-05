@@ -4,6 +4,7 @@ const Voucher = require("../models/Voucher");
 const CryptoJS = require("crypto-js");
 const Vnpay = require("../models/Vnpay");
 // import dateformat from "dateformat";
+// import dateformat from "dateformat";
 // create a new hashPassword
 
 const hashPassword = (password) => {
