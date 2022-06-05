@@ -334,9 +334,9 @@ const vnpayPayment = async (req) => {
         var tmnCode = "D5BZR8VD";
         var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        var returnUrl = encodeURIComponent(
-            "https://camonvidaden-cba2d.web.app/donepayment"
-        );
+        // var returnUrl = encodeURIComponent(
+        //     "https://camonvidaden-cba2d.web.app/donepayment"
+        // );
 
         var date = new Date();
 
@@ -364,7 +364,7 @@ const vnpayPayment = async (req) => {
         vnp_Params_old["vnp_OrderInfo"] = orderInfo;
         vnp_Params_old["vnp_OrderType"] = orderType;
         vnp_Params_old["vnp_Amount"] = amount * 100;
-        vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
+        // vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
         vnp_Params_old["vnp_IpAddr"] = ipAddr;
         vnp_Params_old["vnp_CreateDate"] = createDate;
         // if(bankCode !== null && bankCode !== ''){
