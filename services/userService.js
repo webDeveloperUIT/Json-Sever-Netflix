@@ -3,7 +3,7 @@ const Movie = require("../models/Movie");
 const Voucher = require("../models/Voucher");
 const CryptoJS = require("crypto-js");
 const Vnpay = require("../models/Vnpay");
-import dateformat from "dateformat";
+// import dateformat from "dateformat";
 // create a new hashPassword
 
 const hashPassword = (password) => {
@@ -340,8 +340,8 @@ const vnpayPayment = async (req) => {
 
         var date = new Date();
 
-        // var dateFormat = require("dateformat");
-        var dateFormat = dateformat;
+        var dateFormat = require("dateformat");
+        // var dateFormat = dateformat;
 
         var createDate = dateFormat(date, "yyyymmddHHmmss");
         var orderId = dateFormat(date, "HHmmss");
