@@ -189,7 +189,6 @@ const getStateUsers = async (req) => {
 };
 // by movie
 const postMovie = async (req) => {
-    console.log(req.movie_id);
     try {
         console.log(req);
         let user = await User.findById(req.user.id);
@@ -218,18 +217,12 @@ const postMovie = async (req) => {
 
         oldMovies.push({
             movie_id: movie._id,
-            // title: movie.title,
-            // descripion: movie.desc,
-            // img: movie.img,
-            // year: movie.year,
-            // limit: movie.limit,
-            // genre: movie.genre,
-            // amount: 1,
         });
 
         user.movies_list = oldMovies;
 
         user.wallet_balance -= movie.price;
+        user.point += 4;
         await user.save();
         return {
             error: false,
