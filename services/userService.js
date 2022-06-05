@@ -208,7 +208,7 @@ const postMovie = async (req) => {
             };
         }
 
-        if (user.wallet_balance < movie.cost) {
+        if (user.wallet_balance < movie.price) {
             return {
                 error: true,
                 message: "You have not enough money!",
