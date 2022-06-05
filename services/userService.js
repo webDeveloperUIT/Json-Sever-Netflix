@@ -200,12 +200,12 @@ const postMovie = async (req) => {
                 message: "Not  found user!",
             };
         }
-        if (user.wallet_balance < movie.price) {
-            return {
-                error: true,
-                message: "You have not enough money!",
-            };
-        }
+        // if (user.wallet_balance < movie.price) {
+        //     return {
+        //         error: true,
+        //         message: "You have not enough money!",
+        //     };
+        // }
 
         if (!movie) {
             return {
@@ -213,20 +213,35 @@ const postMovie = async (req) => {
                 message: "Not found movie!",
             };
         }
-
         let oldMovies = user.movies_list;
 
         oldMovies.push({
             movie_id: movie._id,
+            // title: movie.title,
+            // descripion: movie.desc,
+            // img: movie.img,
+            // year: movie.year,
+            // limit: movie.limit,
+            // genre: movie.genre,
+            // amount: 1,
         });
 
         user.movies_list = oldMovies;
-        user.wallet_balance -= movie.price;
-        await user.save();
-        return {
-            error: false,
-            message: "The movie has been added your movie list",
-        };
+
+        user.point += 4;
+        if (user.wallet_balance < movie.price) {
+            return {
+                error: true,
+                message: "Wallet balance not enough to by movie!",
+            };
+        } else {
+            user.wallet_balance -= movie.price;
+            await user.save();
+            return {
+                error: false,
+                message: "The movie has been added your movie list",
+            };
+        }
     } catch (err) {
         return {
             error: true,
