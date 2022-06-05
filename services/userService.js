@@ -341,7 +341,7 @@ const vnpayPayment = async (req) => {
 
         var date = new Date();
 
-        var dateFormat = import("dateformat");
+        var dateFormat = require("dateformat");
         // var dateFormat = dateformat;
 
         var createDate = dateFormat(date, "yyyymmddHHmmss");
