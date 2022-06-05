@@ -8,15 +8,12 @@ const { default: listRoutes } = require("./routes/lists");
 const { default: voucherRoutes } = require("./routes/voucher");
 const app = express();
 var cors = require("cors");
-
 const bodyParser = require("body-parser");
 
 // parse application/json
-app.use(bodyParser.json());
-app.use(express.json({ limit: "30mb", extended: true }));
-app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
-app.use(express.static("public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
