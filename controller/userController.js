@@ -77,7 +77,7 @@ const getStateUsers = async (req, res) => {
   }
 };
 //[POST] api/user/get/movie
-async function postMovie(req, res) {
+const postMovie = async (req, res) => {
   try {
     let DTO = await userService.postMovie(req);
     if (DTO.error) {
@@ -85,22 +85,22 @@ async function postMovie(req, res) {
     }
     res.status(200).json(DTO);
   } catch (err) {
-    res.status(500).jons(err);
+    res.status(500).json(err);
   }
-}
+};
 //[POST] api/user/get/voucher
-async function postVoucher(req, res) {
+const postVoucher = async (req, res) => {
   try {
     let DTO = await userService.postVoucher(req);
     console.log(DTO);
     if (DTO.error) {
-      res.status(500).jons(DTO.message);
+      res.status(500).json(DTO.message);
     }
     res.status(200).json(DTO);
   } catch (err) {
     res.status(500).json(err);
   }
-}
+};
 
 const vnpayPayment = async (req, res) => {
   try {

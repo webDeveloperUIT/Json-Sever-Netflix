@@ -302,7 +302,7 @@ const postVoucher = async (req) => {
 
         return {
             error: false,
-            message: "Thêm voucher thành công",
+            message: "The voucher has been added on your voucher successfully!",
         };
     } catch (err) {
         return {
