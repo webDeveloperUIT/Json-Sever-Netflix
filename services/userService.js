@@ -216,42 +216,25 @@ const postMovie = async (req) => {
         }
         let oldMovies = user.movies_list;
 
-        // for (let obj of oldMovies) {
-        //     if (obj.movie_id === movie._id) {
-        //         obj.amount += 1;
-        //         break;
-        //     } else {
-        //         oldMovies.push({
-        //             movie_id: movie._id,
-        //             title: movie.title,
-        //             descripion: movie.desc,
-        //             img: movie.img,
-        //             year: movie.year,
-        //             limit: movie.limit,
-        //             genre: movie.genre,
-        //             amount: 1,
-        //         });
-        //     }
-        // }
         oldMovies.push({
             movie_id: movie._id,
-            title: movie.title,
-            descripion: movie.desc,
-            img: movie.img,
-            year: movie.year,
-            limit: movie.limit,
-            genre: movie.genre,
-            amount: 1,
         });
 
         user.movies_list = oldMovies;
 
-        user.wallet_balance -= movie.price;
-        await user.save();
-        return {
-            error: false,
-            message: "The movie has been added your movie list",
-        };
+        if (user.wallet_balance < movie.price) {
+            return {
+                error: true,
+                message: "Wallet balance not enough to by movie!",
+            };
+        } else {
+            user.wallet_balance -= movie.price;
+            await user.save();
+            return {
+                error: false,
+                message: "The movie has been added your movie list",
+            };
+        }
     } catch (err) {
         return {
             error: true,
