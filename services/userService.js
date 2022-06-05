@@ -200,6 +200,12 @@ const postMovie = async (req) => {
                 message: "Not  found user!",
             };
         }
+        if (user.wallet_balance < movie.price) {
+            return {
+                error: true,
+                message: "You have not enough money!",
+            };
+        }
 
         if (!movie) {
             return {
@@ -208,12 +214,6 @@ const postMovie = async (req) => {
             };
         }
 
-        if (user.wallet_balance < movie.price) {
-            return {
-                error: true,
-                message: "You have not enough money!",
-            };
-        }
         let oldMovies = user.movies_list;
 
         oldMovies.push({
@@ -223,6 +223,7 @@ const postMovie = async (req) => {
         user.movies_list = oldMovies;
 
         user.wallet_balance -= movie.price;
+        user.point += 4;
         await user.save();
         return {
             error: false,
