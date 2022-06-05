@@ -229,19 +229,12 @@ const postMovie = async (req) => {
 
         user.movies_list = oldMovies;
 
-        if (user.wallet_balance < movie.price) {
-            return {
-                error: true,
-                message: "Wallet balance not enough to by movie!",
-            };
-        } else {
-            user.wallet_balance -= movie.price;
-            await user.save();
-            return {
-                error: false,
-                message: "The movie has been added your movie list",
-            };
-        }
+        user.wallet_balance -= movie.price;
+        await user.save();
+        return {
+            error: false,
+            message: "The movie has been added your movie list",
+        };
     } catch (err) {
         return {
             error: true,
