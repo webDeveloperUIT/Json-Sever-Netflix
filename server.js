@@ -11,10 +11,13 @@ var cors = require("cors");
 
 const bodyParser = require("body-parser");
 
+// parse application/json
+app.use(bodyParser.json());
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 app.use(express.static("public"));
+
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
