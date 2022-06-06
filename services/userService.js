@@ -369,19 +369,19 @@ const vnpayPayment = async (req) => {
         console.log(vnpUrl);
 
         return {
-            err: false,
+            error: false,
             message: "Chuyển hướng thanh toán",
             vnpayUrl: vnpUrl,
         };
     } catch (err) {
         return {
-            err: true,
+            error: true,
             message: err.message,
         };
     }
 };
 
-const vnpayIpn = async (userId, req) => {
+const vnpayIpn = async (req) => {
     try {
         var vnp_Params_old = req.body;
         var secureHash = vnp_Params_old["vnp_SecureHash"];
@@ -395,7 +395,7 @@ const vnpayIpn = async (userId, req) => {
                 return obj;
             }, {});
 
-        var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
+        var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
         var querystring = require("qs");
         var signData = querystring.stringify(vnp_Params, { encode: false });
         var crypto = require("crypto");
@@ -409,7 +409,7 @@ const vnpayIpn = async (userId, req) => {
             });
 
             if (!vnpay) {
-                const user = await User.findById(userId);
+                const user = await User.findById(req.params.id);
 
                 var orderId = vnp_Params["vnp_TxnRef"];
                 var rspCode = vnp_Params["vnp_ResponseCode"];
@@ -443,7 +443,7 @@ const vnpayIpn = async (userId, req) => {
                         vnp_PayDate: vnp_Params["vnp_PayDate"],
                     },
                     userInfo: {
-                        name: user.fullname,
+                        name: user.username,
                         email: user.email,
                     },
                 };
