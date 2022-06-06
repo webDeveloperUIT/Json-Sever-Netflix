@@ -387,7 +387,7 @@ const vnpayPayment = async (req) => {
     }
 };
 
-const vnpayIpn = async (req) => {
+const vnpayIpn = async (userId, req) => {
     try {
         var vnp_Params_old = req.body;
         var secureHash = vnp_Params_old["vnp_SecureHash"];
@@ -415,8 +415,7 @@ const vnpayIpn = async (req) => {
             });
 
             if (!vnpay) {
-                const user = await User.findById(req.user.id);
-                console.log(user);
+                const user = await User.findById(userId);
 
                 var orderId = vnp_Params["vnp_TxnRef"];
                 var rspCode = vnp_Params["vnp_ResponseCode"];
@@ -450,7 +449,7 @@ const vnpayIpn = async (req) => {
                         vnp_PayDate: vnp_Params["vnp_PayDate"],
                     },
                     userInfo: {
-                        name: user.username,
+                        name: user.fullname,
                         email: user.email,
                     },
                 };

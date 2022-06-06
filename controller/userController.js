@@ -116,7 +116,7 @@ const vnpayPayment = async (req, res) => {
 
 const vnpayIpn = async (req, res) => {
   try {
-    let DTO = await userService.vnpayIpn(req);
+    let DTO = await userService.vnpayIpn(req.user.id, req);
     if (DTO.error) {
       res.status(500).json(DTO.message);
     }
