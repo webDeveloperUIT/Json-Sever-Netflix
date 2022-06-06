@@ -309,9 +309,13 @@ const postVoucher = async (req) => {
 
 const vnpayPayment = async (req) => {
     try {
+        // var ipAddr = "127.0.0.1";
+        // var tmnCode = "D5BZR8VD";
+        // var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
+        // var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         var ipAddr = "127.0.0.1";
-        var tmnCode = "D5BZR8VD";
-        var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
+        var tmnCode = "XCGAYSB8";
+        var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         var returnUrl = encodeURIComponent("http://localhost:3000/donepayment");
 
