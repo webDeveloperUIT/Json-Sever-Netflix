@@ -189,7 +189,8 @@ const getStateUsers = async (req) => {
         };
     }
 };
-// by movie
+
+// buy movie
 const postMovie = async (req) => {
     try {
         console.log(req);
@@ -215,6 +216,7 @@ const postMovie = async (req) => {
                 message: "You have not enough money!",
             };
         }
+
         let oldMovies = user.movies_list;
 
         oldMovies.push({
@@ -225,7 +227,9 @@ const postMovie = async (req) => {
 
         user.wallet_balance -= movie.price;
         user.point += 4;
+
         await user.save();
+
         return {
             error: false,
             message: "The movie has been added your movie list",
@@ -319,7 +323,7 @@ const vnpayPayment = async (req) => {
 
         var date = new Date();
 
-        var dateFormat = require("date-format");
+        var dateFormat = require("dateformat");
 
         var createDate = dateFormat(date, "yyyymmddHHmmss");
         var orderId = dateFormat(date, "HHmmss");
@@ -346,8 +350,8 @@ const vnpayPayment = async (req) => {
         vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
         vnp_Params_old["vnp_IpAddr"] = ipAddr;
         vnp_Params_old["vnp_CreateDate"] = createDate;
-        // if(bankCode !== null && bankCode !== ''){
-        //     vnp_Params_old['vnp_BankCode'] = bankCode;
+        // if (bankCode !== null && bankCode !== "") {
+        //     vnp_Params_old["vnp_BankCode"] = bankCode;
         // }
 
         const vnp_Params = Object.keys(vnp_Params_old)
