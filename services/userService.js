@@ -313,9 +313,9 @@ const vnpayPayment = async (req) => {
         var tmnCode = "XCGAYSB8";
         var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        var returnUrl = encodeURIComponent(
-            "https://camonvidaden-cba2d.web.app/donepayment"
-        );
+        // var returnUrl = encodeURIComponent(
+        //     "https://camonvidaden-cba2d.web.app/donepayment"
+        // );
 
         var date = new Date();
 
@@ -362,7 +362,7 @@ const vnpayPayment = async (req) => {
         var crypto = require("crypto");
         var hmac = crypto.createHmac("sha512", secretKey);
         var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
-        vnp_Params["vnp_SecureHash"] = signed;
+        vnp_Params["vnp_HashSecret"] = signed;
         vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
 
         console.log(vnp_Params);
