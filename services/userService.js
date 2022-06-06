@@ -313,7 +313,7 @@ const vnpayPayment = async (req) => {
         var tmnCode = "D5BZR8VD";
         var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        var returnUrl = encodeURIComponent("http://localhost:8080/donepayment");
+        var returnUrl = encodeURIComponent("http://localhost:3000/donepayment");
 
         var date = new Date();
 
