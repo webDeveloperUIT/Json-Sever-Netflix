@@ -3,7 +3,9 @@ const Movie = require("../models/Movie");
 const Voucher = require("../models/Voucher");
 const CryptoJS = require("crypto-js");
 const Vnpay = require("../models/Vnpay");
-// import dateformat from "dateformat";
+// const dateFormat = require("dateformat");
+// const { dateFormat, masks } = require("dateformat");
+// import dateformat from "dateformat"
 // import dateformat from "dateformat";
 // create a new hashPassword
 
@@ -311,14 +313,12 @@ const vnpayPayment = async (req) => {
         var tmnCode = "D5BZR8VD";
         var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        // var returnUrl = encodeURIComponent(
-        //     "https://camonvidaden-cba2d.web.app/donepayment"
-        // );
+        var returnUrl = encodeURIComponent("http://localhost:8080/donepayment");
 
         var date = new Date();
 
-        var dateFormat = require("dateformat");
-        // var dateFormat = dateformat;
+        var dateFormat = require("date-format");
+        // // var dateFormat = dateformat;
 
         var createDate = dateFormat(date, "yyyymmddHHmmss");
         var orderId = dateFormat(date, "HHmmss");
