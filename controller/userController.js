@@ -114,7 +114,7 @@ const vnpayPayment = async (req, res) => {
   }
 };
 
-const vnpayIpn = async (req, res, next) => {
+const vnpayIpn = async (req, res) => {
   try {
     let DTO = await userService.vnpayIpn(req);
     if (DTO.error) {

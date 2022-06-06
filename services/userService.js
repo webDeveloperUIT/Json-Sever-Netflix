@@ -415,7 +415,8 @@ const vnpayIpn = async (req) => {
             });
 
             if (!vnpay) {
-                const user = await User.findById(req.params.id);
+                const user = await User.findById(req.user.id);
+                console.log(user);
 
                 var orderId = vnp_Params["vnp_TxnRef"];
                 var rspCode = vnp_Params["vnp_ResponseCode"];
