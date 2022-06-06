@@ -313,9 +313,9 @@ const vnpayPayment = async (req) => {
         var tmnCode = "XCGAYSB8";
         var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        // var returnUrl = encodeURIComponent(
-        //     "https://camonvidaden-cba2d.web.app/donepayment"
-        // );
+        var returnUrl = encodeURIComponent(
+            "https://camonvidaden-cba2d.web.app/donepayment"
+        );
 
         var date = new Date();
 
