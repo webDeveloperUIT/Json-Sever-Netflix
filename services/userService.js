@@ -318,7 +318,7 @@ const vnpayPayment = async (req) => {
         var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         var returnUrl = encodeURIComponent(
-            "https://camonvidaden-cba2d.web.app/donepayment"
+            "https://netflixapp-2c04a.web.app/donepayment"
         );
 
         var date = new Date();
