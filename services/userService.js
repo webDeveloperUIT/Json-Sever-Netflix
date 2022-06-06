@@ -309,20 +309,17 @@ const postVoucher = async (req) => {
 
 const vnpayPayment = async (req) => {
     try {
-        // var ipAddr = "127.0.0.1";
-        // var tmnCode = "D5BZR8VD";
-        // var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
-        // var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         var ipAddr = "127.0.0.1";
         var tmnCode = "XCGAYSB8";
         var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
         var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        var returnUrl = encodeURIComponent("http://localhost:3000/donepayment");
+        var returnUrl = encodeURIComponent(
+            "https://camonvidaden-cba2d.web.app/donepayment"
+        );
 
         var date = new Date();
 
         var dateFormat = require("date-format");
-        // // var dateFormat = dateformat;
 
         var createDate = dateFormat(date, "yyyymmddHHmmss");
         var orderId = dateFormat(date, "HHmmss");
@@ -346,7 +343,7 @@ const vnpayPayment = async (req) => {
         vnp_Params_old["vnp_OrderInfo"] = orderInfo;
         vnp_Params_old["vnp_OrderType"] = orderType;
         vnp_Params_old["vnp_Amount"] = amount * 100;
-        // vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
+        vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
         vnp_Params_old["vnp_IpAddr"] = ipAddr;
         vnp_Params_old["vnp_CreateDate"] = createDate;
         // if(bankCode !== null && bankCode !== ''){
@@ -373,16 +370,91 @@ const vnpayPayment = async (req) => {
         console.log(vnpUrl);
 
         return {
-            error: false,
+            err: false,
             message: "Chuyển hướng thanh toán",
             vnpayUrl: vnpUrl,
         };
     } catch (err) {
         return {
-            error: true,
+            err: true,
             message: err.message,
         };
     }
+    // try {
+    //     // var ipAddr = "127.0.0.1";
+    //     // var tmnCode = "D5BZR8VD";
+    //     // var secretKey = "TPJRYMTJMLBXCXHZWPNKWKHDHYNPFTWV";
+    //     // var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    //     var ipAddr = "127.0.0.1";
+    //     var tmnCode = "XCGAYSB8";
+    //     var secretKey = "VRTQFJVDDZKRPJPNGKOEFLRDUYGQCWOG";
+    //     var vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    //     var returnUrl = encodeURIComponent("http://localhost:3000/donepayment");
+
+    //     var date = new Date();
+
+    //     var dateFormat = require("date-format");
+    //     // // var dateFormat = dateformat;
+
+    //     var createDate = dateFormat(date, "yyyymmddHHmmss");
+    //     var orderId = dateFormat(date, "HHmmss");
+    //     var amount = req.body.amount;
+
+    //     var orderInfo = encodeURIComponent(req.body.orderDescription);
+    //     var orderType = req.body.orderType;
+    //     var locale = req.body.language;
+    //     if (locale === null || locale === "") {
+    //         locale = "vn";
+    //     }
+    //     var currCode = "VND";
+    //     var vnp_Params_old = {};
+    //     vnp_Params_old["vnp_Version"] = "2.1.0";
+    //     vnp_Params_old["vnp_Command"] = "pay";
+    //     vnp_Params_old["vnp_TmnCode"] = tmnCode;
+    //     // vnp_Params_old['vnp_Merchant'] = ''
+    //     vnp_Params_old["vnp_Locale"] = locale;
+    //     vnp_Params_old["vnp_CurrCode"] = currCode;
+    //     vnp_Params_old["vnp_TxnRef"] = orderId;
+    //     vnp_Params_old["vnp_OrderInfo"] = orderInfo;
+    //     vnp_Params_old["vnp_OrderType"] = orderType;
+    //     vnp_Params_old["vnp_Amount"] = amount * 100;
+    //     // vnp_Params_old["vnp_ReturnUrl"] = returnUrl;
+    //     vnp_Params_old["vnp_IpAddr"] = ipAddr;
+    //     vnp_Params_old["vnp_CreateDate"] = createDate;
+    //     // if(bankCode !== null && bankCode !== ''){
+    //     //     vnp_Params_old['vnp_BankCode'] = bankCode;
+    //     // }
+
+    //     const vnp_Params = Object.keys(vnp_Params_old)
+    //         .sort()
+    //         .reduce((obj, key) => {
+    //             obj[key] = vnp_Params_old[key];
+    //             return obj;
+    //         }, {});
+
+    //     var querystring = require("qs");
+    //     var signData = querystring.stringify(vnp_Params, { encode: false });
+    //     var crypto = require("crypto");
+    //     var hmac = crypto.createHmac("sha512", secretKey);
+    //     var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+    //     vnp_Params["vnp_SecureHash"] = signed;
+    //     vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+
+    //     console.log(vnp_Params);
+
+    //     console.log(vnpUrl);
+
+    //     return {
+    //         error: false,
+    //         message: "Chuyển hướng thanh toán",
+    //         vnpayUrl: vnpUrl,
+    //     };
+    // } catch (err) {
+    //     return {
+    //         error: true,
+    //         message: err.message,
+    //     };
+    // }
 };
 
 const vnpayIpn = async (req) => {
