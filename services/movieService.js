@@ -91,8 +91,9 @@ const deleteMovie = async (req) => {
 };
 // get moive
 const getMovie = async (req) => {
+  console.log(req.body);
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.body.movie_id);
     if (!movie) {
       return {
         error: true,

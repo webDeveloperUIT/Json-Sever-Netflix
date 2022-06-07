@@ -6,7 +6,7 @@ const movieRoutes = (app) => {
   // create
   router.post("/create", verifyToken, movieController.createMovie);
   // get
-  router.get("/get/:id", movieController.getMovie);
+  router.get("/get", movieController.getMovie);
   // get all
   router.get("/", verifyToken, movieController.getAllMovie);
   // get random
