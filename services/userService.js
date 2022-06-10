@@ -542,7 +542,7 @@ const topUser = async (req) => {
                 },
 
                 {
-                    $sort: { total_point: -1 },
+                    $sort: { money_spended: -1 },
                 },
             ]);
 
