@@ -23,6 +23,9 @@ const userRoutes = (app) => {
   // user payment
   router.post("/vnpay_payment", verifyToken, userController.vnpayPayment);
   router.post("/vnpay_ipn", verifyToken, userController.vnpayIpn);
+  // top user
+  router.get("/list/top", verifyToken, userController.topUser);
+
   return app.use("/api/users/", router);
 };
 export default userRoutes;

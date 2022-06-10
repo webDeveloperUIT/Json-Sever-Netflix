@@ -201,19 +201,20 @@ const postMovie = async (req) => {
                 error: true,
                 message: "Not  found user!",
             };
-        }
-
-        if (!movie) {
+        } else if (!movie) {
             return {
                 error: true,
                 message: "Not found movie!",
             };
-        }
-
-        if (user.wallet_balance < movie.price) {
+        } else if (user.wallet_balance < movie.price) {
             return {
                 error: true,
                 message: "You have not enough money!",
+            };
+        } else if (user.point < movie.price) {
+            return {
+                error: true,
+                message: "You have not enough point!",
             };
         }
 
@@ -225,8 +226,9 @@ const postMovie = async (req) => {
 
         user.movies_list = oldMovies;
 
+        user.money_spended += movie.price;
         user.wallet_balance -= movie.price;
-        user.point += 4;
+        user.point += 200;
 
         await user.save();
 
@@ -472,6 +474,97 @@ const vnpayIpn = async (userId, req) => {
         };
     }
 };
+const topUser = async (req) => {
+    if (req.user.isAdmin) {
+        try {
+            const year = new Date().getFullYear();
+            const month = ("0" + (new Date().getMonth() + 1)).slice(-2);
+
+            const topUserYear = await User.aggregate([
+                {
+                    $match: {
+                        createdAt: {
+                            $gte: new Date(`${year}-01-01T00:00:00.000+07:00`),
+                            $lt: new Date(`${year}-12-31T00:00:00.000+07:00`),
+                        },
+                    },
+                },
+                // {
+                //     $group: {
+                //         _id: "$_id",
+                //         money_spended: { $sum: "$money_spended" },
+                //     },
+                // },
+                {
+                    $project: {
+                        _id: 1,
+                        profilePic: 1,
+                        username: 1,
+                        email: 1,
+                        phone: 1,
+                        money_spended: 1,
+                    },
+                },
+
+                {
+                    $sort: { money_spended: -1 },
+                },
+            ]);
+
+            const topUserMonth = await User.aggregate([
+                {
+                    $match: {
+                        createdAt: {
+                            $gte: new Date(
+                                `${year}-${month}-01T00:00:00.000+07:00`
+                            ),
+                            $lt: new Date(
+                                `${year}-${month}-31T00:00:00.000+07:00`
+                            ),
+                        },
+                    },
+                },
+                // {
+                //     $group: {
+                //         _id: "$_id",
+                //         money_spended: { $sum: "$money_spended" },
+                //     },
+                // },
+                {
+                    $project: {
+                        _id: 1,
+                        profilePic: 1,
+                        username: 1,
+                        email: 1,
+                        phone: 1,
+                        money_spended: 1,
+                    },
+                },
+
+                {
+                    $sort: { total_point: -1 },
+                },
+            ]);
+
+            return {
+                error: false,
+                message: "Get top users SuccessFully",
+                topUserYear,
+                topUserMonth,
+            };
+        } catch (err) {
+            return {
+                error: true,
+                message: err.message,
+            };
+        }
+    } else {
+        return {
+            error: true,
+            message: "Get top user failure!",
+        };
+    }
+};
 
 module.exports = {
     updateUser,
@@ -484,4 +577,5 @@ module.exports = {
     NewUser,
     vnpayIpn,
     vnpayPayment,
+    topUser,
 };

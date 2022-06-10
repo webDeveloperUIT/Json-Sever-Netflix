@@ -31,6 +31,11 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    money_spended: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     phone: {
       type: String,
       default: "03...",

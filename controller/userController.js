@@ -122,7 +122,18 @@ const vnpayIpn = async (req, res) => {
     }
     res.status(200).json(DTO);
   } catch (err) {
-    res.status(500).json(DTO.message);
+    res.status(500).json(err.message);
+  }
+};
+const topUser = async (req, res) => {
+  try {
+    let DTO = await userService.topUser(req);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 };
 module.exports = {
@@ -136,4 +147,5 @@ module.exports = {
   vnpayPayment,
   vnpayIpn,
   NewUser,
+  topUser,
 };
