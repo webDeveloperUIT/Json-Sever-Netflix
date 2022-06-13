@@ -76,6 +76,20 @@ const getAllMovie = async (req, res) => {
     res.status(500).json(err);
   }
 };
+// [GET] /api/movies/
+const getStateMovie = async (req, res) => {
+  try {
+    let DTO = await movieService.getStateMovie(req);
+    console.log(DTO);
+    if (DTO.error) {
+      res.status(500).json(DTO.message);
+    }
+    res.status(200).json(DTO);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 module.exports = {
   createMovie,
   updateMovie,
@@ -83,4 +97,5 @@ module.exports = {
   getMovie,
   getRandomMovie,
   getAllMovie,
+  getStateMovie,
 };

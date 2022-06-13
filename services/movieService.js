@@ -1,4 +1,5 @@
 const Movie = require("../models/Movie");
+const mongoose = require("mongoose");
 // create a new movie
 const createMovie = async (req) => {
   console.log(req.body.movie);
@@ -7,7 +8,6 @@ const createMovie = async (req) => {
       title: req.body.movie.title,
       desc: req.body.movie.desc,
       img: req.body.movie.img,
-      imgTitle: req.body.movie.imgTitle,
       imgSm: req.body.movie.imgSm,
       trailer: req.body.movie.trailer,
       video: req.body.movie.video,
@@ -162,6 +162,42 @@ const getAllMovie = async (req) => {
     };
   }
 };
+const getStateMovie = async (req) => {
+  const today = new Date();
+  const lastYear = today.setFullYear(today.setFullYear() - 1);
+
+  try {
+    const data = await Movie.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId("629cadd2ef479f17a91e4e40"),
+        },
+      },
+      {
+        $project: {
+          month: { $month: "$updatedAt" },
+          // price: 1,
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    return {
+      error: false,
+      message: "Get stats user successfully!",
+      data,
+    };
+  } catch (err) {
+    return {
+      error: true,
+      message: err.message,
+    };
+  }
+};
 
 module.exports = {
   createMovie,
@@ -170,4 +206,5 @@ module.exports = {
   getMovie,
   getRandomMovie,
   getAllMovie,
+  getStateMovie,
 };
