@@ -214,12 +214,6 @@ const postMovie = async (req) => {
                 message: "You have not enough money!",
             };
         }
-        if (user.point < movie.price) {
-            return {
-                error: true,
-                message: "You have not enough point!",
-            };
-        }
 
         let oldMovies = user.movies_list;
 
@@ -229,9 +223,9 @@ const postMovie = async (req) => {
 
         user.movies_list = oldMovies;
 
-        user.money_spended += movie.price;
         user.wallet_balance -= movie.price;
-        user.point += 200;
+        user.money_spended += movie.price;
+        user.point += 4;
 
         await user.save();
 
