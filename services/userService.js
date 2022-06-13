@@ -201,17 +201,20 @@ const postMovie = async (req) => {
                 error: true,
                 message: "Not  found user!",
             };
-        } else if (!movie) {
+        }
+        if (!movie) {
             return {
                 error: true,
                 message: "Not found movie!",
             };
-        } else if (user.wallet_balance < movie.price) {
+        }
+        if (user.wallet_balance < movie.price) {
             return {
                 error: true,
                 message: "You have not enough money!",
             };
-        } else if (user.point < movie.price) {
+        }
+        if (user.point < movie.price) {
             return {
                 error: true,
                 message: "You have not enough point!",
