@@ -12,7 +12,7 @@ const movieRoutes = (app) => {
   // get random
   router.get("/random", movieController.getRandomMovie);
   // get stats of movie
-  router.get("/stats", movieController.getStateMovie);
+  // router.get("/stats", movieController.getStateMovie);
   // update
   router.put("/update/:id", verifyToken, movieController.updateMovie);
   // delete

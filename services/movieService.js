@@ -162,42 +162,42 @@ const getAllMovie = async (req) => {
     };
   }
 };
-const getStateMovie = async (req) => {
-  const today = new Date();
-  const lastYear = today.setFullYear(today.setFullYear() - 1);
+// const getStateMovie = async () => {
+//   const today = new Date();
+//   const lastYear = today.setFullYear(today.setFullYear() - 1);
 
-  try {
-    const data = await Movie.aggregate([
-      {
-        $match: {
-          _id: new mongoose.Types.ObjectId("629cadd2ef479f17a91e4e40"),
-        },
-      },
-      {
-        $project: {
-          month: { $month: "$updatedAt" },
-          // price: 1,
-        },
-      },
-      {
-        $group: {
-          _id: "$month",
-          total: { $sum: 1 },
-        },
-      },
-    ]);
-    return {
-      error: false,
-      message: "Get stats user successfully!",
-      data,
-    };
-  } catch (err) {
-    return {
-      error: true,
-      message: err.message,
-    };
-  }
-};
+//   try {
+//     const data = await Movie.aggregate([
+//       {
+//         $match: {
+//           _id: new mongoose.Types.ObjectId("629cadd2ef479f17a91e4e40"),
+//         },
+//       },
+//       {
+//         $project: {
+//           month: { $month: "$updatedAt" },
+//           // price: 1,
+//         },
+//       },
+//       {
+//         $group: {
+//           _id: "$month",
+//           total: { $sum: 1 },
+//         },
+//       },
+//     ]);
+//     return {
+//       error: false,
+//       message: "Get stats user successfully!",
+//       data,
+//     };
+//   } catch (err) {
+//     return {
+//       error: true,
+//       message: err.message,
+//     };
+//   }
+// };
 
 module.exports = {
   createMovie,
@@ -206,5 +206,5 @@ module.exports = {
   getMovie,
   getRandomMovie,
   getAllMovie,
-  getStateMovie,
+  // getStateMovie,
 };
