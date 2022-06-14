@@ -189,7 +189,7 @@ const getStateUsers = async (req) => {
         };
     }
 };
-
+//
 // buy movie
 const postMovie = async (req) => {
     try {
