@@ -143,7 +143,7 @@ const getRandomMovie = async (req) => {
 const getAllMovie = async (req) => {
   if (req.user.isAdmin) {
     try {
-      const movies = await Movie.find();
+      const movies = await Movie.find({});
       return {
         error: false,
         message: "Get all movies successfully!",
