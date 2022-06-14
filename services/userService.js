@@ -140,7 +140,7 @@ const getAllUser = async (req) => {
         try {
             const users = query
                 ? await User.find().limit(5)
-                : await User.find();
+                : await User.find({});
             return {
                 error: false,
                 message: "Get list user successfully!",
